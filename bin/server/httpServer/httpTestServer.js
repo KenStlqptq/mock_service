@@ -51,4 +51,13 @@ app.get('/normalRequest', (req, res) => {
 });
 app.get('/timeoutRequest', (req, res) => {
 });
+app.get('/test', (req, res) => {
+    res.send({
+        errorCode: 0,
+        data: {
+            name: "test2"
+        }
+    });
+    res.end();
+});
 httpServer.listen(port);

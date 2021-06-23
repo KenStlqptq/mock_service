@@ -42,15 +42,13 @@ TcpBuffer.prototype.expand = function (data) {
         this.buffer.copy(tempbuffer, 0, this.readpos, this.readpos + taillen);
         this.buffer.copy(tempbuffer, taillen, 0, this.writepos);
 
-    }
-    // 数据是按照顺序进行的完整存储
-    else {
+    } else {
+        // 数据是按照顺序进行的完整存储
         this.buffer.copy(tempbuffer, 0, this.readpos, this.writepos);
     }
 
     this.buffer = tempbuffer;
     tempbuffer = null;
-
     this.readpos = 0;
     this.writepos = this.datalen;
     data.copy(this.buffer, this.writepos, 0, pushlen);
