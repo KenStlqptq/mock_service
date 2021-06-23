@@ -1,0 +1,5 @@
+{
+    "HTTPPort": 30011,
+    "TCPPort": 30012,
+    "UDPPort": 30013
+}

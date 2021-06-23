@@ -1,0 +1,24 @@
+{
+  "name": "mock_service",
+  "version": "1.0.0",
+  "description": "压测游戏服务器靶机",
+  "main": "index.js",
+  "scripts": {
+    "run": "node ./bin/index.js",
+    "watch": "tsc -w -p tsconfig.json",
+    "build": "tsc -p tsconfig.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chance": "^1.1.7",
+    "dgram": "^1.0.1",
+    "express": "^4.17.1",
+    "log4js": "^6.3.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.12",
+    "@types/uuid": "^8.3.0"
+  }
+}
