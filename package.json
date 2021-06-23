@@ -6,7 +6,10 @@
   "scripts": {
     "run": "node ./bin/index.js",
     "watch": "tsc -w -p tsconfig.json",
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "run HttpTestServer":"node ./bin/server/httpServer/httpTestServer.js",
+    "run TcpTestServer":"node ./bin/server/tcpServer/tcpTestServer.js",
+    "run UdpTestServer":"node ./bin/server/udpServer/udpTestServer.js"
   },
   "author": "",
   "license": "ISC",
