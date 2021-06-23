@@ -1,15 +1,20 @@
 import * as net from "net";
+import {TcpServer} from './tcpServer';
+
+let o:any =TcpServer;
+let tmp =o.pack(1,"123");
+
 
 var server = net.createServer(function (client) {
-    // console.log(' Client connection:');
-    // console.log(' local= %s:%s',client.localAddress,client.localPort);
-    // console.log(' remote= %s:%s',client.remoteAddress,client.remotePort);
     client.setTimeout(5000);
     client.setEncoding('utf8');
     client.on('data', function (data) {
         console.log('Received data from client on port %d: %s', client.remotePort, data.toString());
-        // console.log('Bytes received:', client.bytesRead);
-        // console.log(' Bytes sent:' + client.bytesWritten);
+        client.write("test90", (err) => {
+            if (err) {
+                console.log(err);
+            }
+        });
     });
     client.on('end', function () {
         console.log('Client disconnected');
@@ -24,7 +29,12 @@ var server = net.createServer(function (client) {
         console.log('Socket Timed Out');
     });
 });
+server.maxConnections = 100;
 
+server.addListener("connection", (client) => {
+    client
+
+});
 
 
 

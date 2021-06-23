@@ -23,17 +23,22 @@ const net = __importStar(require("net"));
 let socket = net.connect({
     host: "127.0.0.1",
     port: 8107,
-    localPort: 61234,
+    localPort: 61235,
 }, () => {
 });
 let success = socket.write("test\r\n");
 if (success) {
     console.log("send success");
 }
-socket.write("test2");
-socket.end();
+setInterval(() => {
+    socket.write("test3");
+}, 1000);
+//socket.end();
 socket.on('error', (err) => {
     console.log(err);
+});
+socket.on('data', (data) => {
+    console.log(`receive data ${data}`);
 });
 process.on('beforeExit', (code) => {
     socket.end();

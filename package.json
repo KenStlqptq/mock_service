@@ -11,6 +11,7 @@
     "run TcpTestServer":"node ./bin/server/tcpServer/tcpTestServer.js",
     "run UdpTestServer":"node ./bin/server/udpServer/udpTestServer.js",
     "pm2":"pm2 start ./bin/server/httpServer/httpTestServer.js --watch && pm2 start ./bin/server/tcpServer/tcpTestServer.js --watch && pm2 start ./bin/server/udpServer/udpTestServer.js --watch"
+
   },
   "author": "",
   "license": "ISC",
