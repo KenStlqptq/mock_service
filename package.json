@@ -16,12 +16,12 @@
   "license": "ISC",
   "dependencies": {
     "chance": "^1.1.7",
-    "dgram": "^1.0.1",
     "express": "^4.17.1",
     "log4js": "^6.3.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/chance": "^1.1.2",
     "@types/express": "^4.17.12",
     "@types/uuid": "^8.3.0"
   }
