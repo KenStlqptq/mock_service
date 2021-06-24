@@ -24,7 +24,7 @@ app.get('/errorRequest', (req, res) => {
 });
 
 app.get('/random', (req, res) => {
-    const rand = chance.integer({ min: 0, max: 100 })
+    const rand = chance.integer({ min: 0, max: 100 });
     if (rand < 80) {
         res.send({
             errorCode: 0,
