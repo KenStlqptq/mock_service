@@ -1,9 +1,8 @@
 import * as net from "net";
-import {TcpServer} from './tcpServer';
+const ByteBuffer = require('./bytebuffer');
+const PROTO_FIELD = require('./const').PROTO_FIELD;
 
-let o:any =TcpServer;
-let tmp =o.pack(1,"123");
-
+const zlib = require('zlib');
 
 var server = net.createServer(function (client) {
     client.setTimeout(5000);
@@ -49,4 +48,47 @@ server.listen(8107, function () {
 });
 
 
+let head = [{
+    "len": 2,
+    "val": 0,
+    "type": 10
+}, {
+    "len": 2,
+    "val": 0,
+    "type": 2
+}, {
+    "len": 2,
+    "val": 0,
+    "type": 1
+}, {
+    "len": 2,
+    "val": 0,
+    "type": 99
+}]
+function pack(EProtoId: any, EProtoBody: any) {
+    let bytelen = EProtoBody == undefined ? 0 : EProtoBody.length;
+    let buffer = ByteBuffer.create(1);
 
+    for (let field of head) {
+        switch (field.type) {
+            case PROTO_FIELD.CMD:
+                buffer.writeuint(EProtoId, field.len);
+                break;
+            case PROTO_FIELD.LEN_EXCLUDE_HEAD:
+                buffer.writeuint(bytelen, field.len);
+                break;
+            case PROTO_FIELD.LEN_INCLUDE_HEAD:
+                buffer.writeuint(bytelen + 8, field.len);
+                break;
+            default:
+                buffer.writeuint(field.val, field.len);
+        }
+    }
+    if (bytelen) {
+        buffer.writebytearray(EProtoBody, bytelen); //一个整包的长度
+    }
+    let pack = buffer.pack();
+    return pack; //缓存区pack压包
+}
+
+console.log(pack(1,{a:123123}));
