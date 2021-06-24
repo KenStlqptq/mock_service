@@ -26,15 +26,24 @@ app.get('/errorRequest', (req, res) => {
 app.get('/random', (req, res) => {
     const rand = chance.integer({ min: 0, max: 100 });
     if (rand < 80) {
-        res.send({
-            errorCode: 0,
-            data: {
-                name: "test",
-                time: Date.now(),
-                token: uuid.v4()
-            }
-        });
-        res.end();
+        let respTime = 0;
+        if (rand < 10) {
+            respTime = 200;
+        }
+        else if (rand < 20){
+            respTime = 600;
+        }
+        setTimeout(()=>{
+            res.send({
+                errorCode: 0,
+                data: {
+                    name: "test",
+                    time: Date.now(),
+                    token: uuid.v4()
+                }
+            });
+            res.end();
+        }, respTime)
     }
     else if (rand < 85) {
         res.send({
