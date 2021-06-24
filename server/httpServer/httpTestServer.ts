@@ -19,6 +19,11 @@ app.get('/errorRequest', (req, res) => {
     res.end();
 });
 
+app.get('/errorStatusCode', (req, res) => {
+    res.send(402);
+    res.end();
+});
+
 app.get('/normalRequest', (req, res) => {
     res.send({
         errorCode: 0,
