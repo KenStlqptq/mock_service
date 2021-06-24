@@ -9,6 +9,7 @@ let socket: net.Socket = net.connect({
 
 });
 
+
 let success = false;
 setInterval(() => {
     success = socket.write("0001000e00060000010203030201");
