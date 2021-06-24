@@ -7,7 +7,7 @@ import Chance from "chance";
 const app = express();
 const port = 3000;
 const chance = new Chance();
-const errorCode1 = [402, 401, 404];
+const errorCode1 = [402, 401, 500];
 const errorCode2 = [0x111, 0x112, 0x113];
 
 let httpServer = http.createServer(app);
