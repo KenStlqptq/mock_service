@@ -4,8 +4,6 @@ const zlib = require('zlib'); // 压缩
 const TcpBuffer = require('./tcpBuffer');
 const EventEmitter = require('events').EventEmitter;
 
-let Logger;
-
 export class TcpServer extends EventEmitter {
     protocol = 'TCP';
     socket = null;

@@ -9,11 +9,13 @@ var server = net.createServer(function (client) {
     client.setEncoding('utf8');
     client.on('data', function (data) {
         console.log('Received data from client on port %d: %s', client.remotePort, data.toString());
-        client.write("test90", (err) => {
-            if (err) {
-                console.log(err);
-            }
-        });
+        client.write(
+            pack(1, "123").toString('Hex')
+            , (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
     });
     client.on('end', function () {
         console.log('Client disconnected');
@@ -31,7 +33,6 @@ var server = net.createServer(function (client) {
 server.maxConnections = 100;
 
 server.addListener("connection", (client) => {
-    client
 
 });
 
@@ -90,5 +91,3 @@ function pack(EProtoId: any, EProtoBody: any) {
     let pack = buffer.pack();
     return pack; //缓存区pack压包
 }
-
-console.log(pack(1,{a:123123}));
