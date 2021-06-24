@@ -7,17 +7,15 @@
     "run": "node ./bin/index.js",
     "watch": "tsc -w -p tsconfig.json",
     "build": "tsc -p tsconfig.json",
-    "run HttpTestServer":"node ./bin/server/httpServer/httpTestServer.js",
-    "run TcpTestServer":"node ./bin/server/tcpServer/tcpTestServer.js",
-    "run UdpTestServer":"node ./bin/server/udpServer/udpTestServer.js",
-    "pm2":"pm2 start ./bin/server/httpServer/httpTestServer.js --watch && pm2 start ./bin/server/tcpServer/tcpTestServer.js --watch && pm2 start ./bin/server/udpServer/udpTestServer.js --watch"
-
+    "run HttpTestServer": "node ./bin/server/httpServer/httpTestServer.js",
+    "run TcpTestServer": "node ./bin/server/tcpServer/tcpTestServer.js",
+    "run UdpTestServer": "node ./bin/server/udpServer/udpTestServer.js",
+    "pm2": "pm2 start ./bin/server/httpServer/httpTestServer.js --watch && pm2 start ./bin/server/tcpServer/tcpTestServer.js --watch && pm2 start ./bin/server/udpServer/udpTestServer.js --watch"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chance": "^1.1.7",
-    "dgram": "^1.0.1",
     "express": "^4.17.1",
     "log4js": "^6.3.0",
     "uuid": "^8.3.2"
