@@ -14,24 +14,7 @@ export class TcpServer extends EventEmitter {
     temphead: any = null;
     bigendian = 1;
     headsize = 8;
-
-    head = [{
-        "len": 2,
-        "val": 0,
-        "type": 10
-    }, {
-        "len": 2,
-        "val": 0,
-        "type": 2
-    }, {
-        "len": 2,
-        "val": 0,
-        "type": 1
-    }, {
-        "len": 2,
-        "val": 0,
-        "type": 99
-    }]
+    head = [{"len":2,"val":0,"type":10},{"len":2,"val":0,"type":2},{"len":2,"val":0,"type":1},{"len":2,"val":0,"type":99}];
 
     constructor(serverid: string) {
         super();

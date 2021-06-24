@@ -24,13 +24,15 @@ let server = net.createServer(function (client) {
         console.log('Socket Timed Out');
     });
 });
-server.maxConnections = 100;
 
+console.log(server.address());
+server.maxConnections = 100;
 server.addListener("connection", (client) => {
 
 });
 
-server.listen(8107, function () {
+
+server.listen({ host: "localhost", port: 3002}, function () {
     console.log('Server listening: ' + JSON.stringify(server.address()));
     server.on('close', function () {
         console.log('Server Terminated');
@@ -47,11 +49,8 @@ function test(data: Buffer, client: net.Socket) {
     switch (reqID) {
         case 1:
             client.write(
-                tcpDataConvert.pack(1, "test").toString('hex')
-                , (err) => {
-                    if (err) {
-                        console.log(err);
-                    }
+                tcpDataConvert.pack(1, "test").toString('hex'), (err) => {
+                    if (err) console.log(err);
                 });
             break;
         default:

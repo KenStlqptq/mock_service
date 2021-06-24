@@ -1,8 +1,8 @@
 import * as net from "net";
 
 let socket: net.Socket = net.connect({
-    host: "127.0.0.1",
-    port: 8107,
+    host: "121.5.49.25",
+    port: 3002,
     localPort: 61235,
 
 }, () => {
@@ -13,10 +13,13 @@ let success = false;
 setInterval(() => {
     success = socket.write("0001000e00060000010203030201");
     if (success) {
-        console.log("send success");
+        console.log("send success ");
     }
 }, 4000);
 
+socket.on('connect',()=>{
+    console.log("scoket created");
+});
 socket.on('error', (err) => {
     console.log(err);
 });

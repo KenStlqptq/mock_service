@@ -1,10 +1,10 @@
 import dgram from 'dgram';
 
 let udp_server = dgram.createSocket('udp4');
-udp_server.bind(5678);
+udp_server.bind(3002);
 
 udp_server.on('listening', function () {
-    console.log('udp server linstening 5678.');
+    console.log('udp server linstening 3002.');
 })
 
 udp_server.on('message', function (msg, rinfo) {

@@ -5,7 +5,7 @@ import * as http from "http";
 import Chance from "chance";
 
 const app = express();
-const port = 3000;
+const port = 3001;
 const chance = new Chance();
 const errorCode1 = [402, 401, 500];
 const errorCode2 = [0x111, 0x112, 0x113];
