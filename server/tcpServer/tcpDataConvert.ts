@@ -1,6 +1,5 @@
 const ByteBuffer = require('./bytebuffer');
 const PROTO_FIELD = require('./const').PROTO_FIELD;
-const zlib = require('zlib'); // 压缩
 const TcpBuffer = require('./tcpBuffer');
 const EventEmitter = require('events').EventEmitter;
 
@@ -15,6 +14,7 @@ export class TcpServer extends EventEmitter {
     temphead: any = null;
     bigendian = 1;
     headsize = 8;
+
     head = [{
         "len": 2,
         "val": 0,
@@ -38,14 +38,11 @@ export class TcpServer extends EventEmitter {
         const self: any = this;
         this.id = serverid;
         this.on('pkg', function (pkg: any) {
-            if ((1 << 1 & pkg.flag) > 0) {
-                pkg.protobody = zlib.gunzipSync(pkg.protobody);
-            }
             let cb = self.listeners[pkg.protoid];
             if (!!cb) {
                 cb(pkg);
             } else {
-                //Logger.warn('Unknowned msg id:' + pkg.protoid);
+                console.log('Unknowned msg id:' + pkg.protoid);
             }
         });
     }
@@ -58,7 +55,7 @@ export class TcpServer extends EventEmitter {
                 }
                 const pkg = this.unpack(headbuffer);
                 if (0 == pkg.protolen) {
-                    //Logger.debug(`开始要解的包 包头:${headbuffer.toString('hex')} 无包体`);
+                    console.log(`开始要解的包 包头:${headbuffer.toString('hex')} 无包体`);
                     this.emit('pkg', pkg);
                 } else {
                     this.temphead = pkg;
@@ -70,14 +67,14 @@ export class TcpServer extends EventEmitter {
                 }
                 const pkg = this.temphead;
                 pkg.protobody = bodybuffer;
-                //Logger.debug(`开始要解的包 包头:${pkg.headbuffer.toString('hex')} 包体:${bodybuffer.toString('hex')}`);
+                console.log(`开始要解的包 包头:${pkg.headbuffer.toString('hex')} 包体:${bodybuffer.toString('hex')}`);
                 this.emit('pkg', pkg);
                 this.temphead = null;
             }
         }
     }
 
-    public unpack(msg: string) {
+    public unpack(msg:any) {
         if (msg.length < this.headsize) {
             throw new Error("Unexpected msg length!");
         }
@@ -141,8 +138,3 @@ export class TcpServer extends EventEmitter {
         return pack; //缓存区pack压包
     }
 }
-
-
-
-
-module.exports = TcpServer;

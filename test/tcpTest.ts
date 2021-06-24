@@ -9,29 +9,26 @@ let socket: net.Socket = net.connect({
 
 });
 
-let success = socket.write("test\r\n");
-
-if (success) {
-    console.log("send success");
-}
-
+let success = false;
 setInterval(() => {
-    socket.write("test3");
-}, 1000);
-
-
-
-//socket.end();
+    success = socket.write("0001000e00060000010203030201");
+    if (success) {
+        console.log("send success");
+    }
+}, 4000);
 
 socket.on('error', (err) => {
     console.log(err);
 });
-socket.on('data',(data)=>{
+
+socket.on('data', (data) => {
     console.log(`receive data ${data}`);
 })
-
-
 
 process.on('beforeExit', (code: number) => {
     socket.end();
 });
+
+socket.on('timeout',()=>{
+    console.log(`connect timeOut`);
+})

@@ -1,21 +1,15 @@
-import * as net from "net";
-const ByteBuffer = require('./bytebuffer');
-const PROTO_FIELD = require('./const').PROTO_FIELD;
+import * as net from 'net';
+import * as TcpServer from "./tcpDataConvert";
 
-const zlib = require('zlib');
+let tcpDataConvert = new TcpServer.TcpServer("1");
 
-var server = net.createServer(function (client) {
+let server = net.createServer(function (client) {
     client.setTimeout(5000);
     client.setEncoding('utf8');
-    client.on('data', function (data) {
-        console.log('Received data from client on port %d: %s', client.remotePort, data.toString());
-        client.write(
-            pack(1, "123").toString('Hex')
-            , (err) => {
-                if (err) {
-                    console.log(err);
-                }
-            });
+    client.on('data', function (data: string) {
+        let bufferData = Buffer.from(data, 'hex');
+        console.log('Received data from client on port %d: %s', client.remotePort, data);
+        test(bufferData, client);
     });
     client.on('end', function () {
         console.log('Client disconnected');
@@ -36,8 +30,6 @@ server.addListener("connection", (client) => {
 
 });
 
-
-
 server.listen(8107, function () {
     console.log('Server listening: ' + JSON.stringify(server.address()));
     server.on('close', function () {
@@ -48,46 +40,21 @@ server.listen(8107, function () {
     });
 });
 
-
-let head = [{
-    "len": 2,
-    "val": 0,
-    "type": 10
-}, {
-    "len": 2,
-    "val": 0,
-    "type": 2
-}, {
-    "len": 2,
-    "val": 0,
-    "type": 1
-}, {
-    "len": 2,
-    "val": 0,
-    "type": 99
-}]
-function pack(EProtoId: any, EProtoBody: any) {
-    let bytelen = EProtoBody == undefined ? 0 : EProtoBody.length;
-    let buffer = ByteBuffer.create(1);
-
-    for (let field of head) {
-        switch (field.type) {
-            case PROTO_FIELD.CMD:
-                buffer.writeuint(EProtoId, field.len);
-                break;
-            case PROTO_FIELD.LEN_EXCLUDE_HEAD:
-                buffer.writeuint(bytelen, field.len);
-                break;
-            case PROTO_FIELD.LEN_INCLUDE_HEAD:
-                buffer.writeuint(bytelen + 8, field.len);
-                break;
-            default:
-                buffer.writeuint(field.val, field.len);
-        }
+function test(data: Buffer, client: net.Socket) {
+    let content = tcpDataConvert.unpack(data);
+    let reqID = content?.head[0]?.val;
+    if (!reqID) return;
+    switch (reqID) {
+        case 1:
+            client.write(
+                tcpDataConvert.pack(1, "test").toString('hex')
+                , (err) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            break;
+        default:
+            break;
     }
-    if (bytelen) {
-        buffer.writebytearray(EProtoBody, bytelen); //一个整包的长度
-    }
-    let pack = buffer.pack();
-    return pack; //缓存区pack压包
 }
