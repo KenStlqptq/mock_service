@@ -8,9 +8,11 @@ let server = net.createServer(function (client) {
     client.setEncoding('utf8');
     client.on('data', function (data: string) {
         console.log(`Source Data:${data}`);
-        let bufferData = Buffer.from(data, 'hex');
-        console.log('Received data from client on port %d: %s', client.remotePort, data);
-        test(bufferData, client);
+        if (data && data != "") {
+            let bufferData = Buffer.from(data, 'hex');
+            console.log('Received data from client on port %d: %s', client.remotePort, data);
+            test(bufferData, client);
+        }
     });
     client.on('end', function () {
         console.log('Client disconnected');
@@ -33,7 +35,7 @@ server.addListener("connection", (client) => {
 });
 
 
-server.listen({ host: "0.0.0.0", port: 3002}, function () {
+server.listen({ host: "0.0.0.0", port: 3002 }, function () {
     console.log('Server listening: ' + JSON.stringify(server.address()));
     server.on('close', function () {
         console.log('Server Terminated');
