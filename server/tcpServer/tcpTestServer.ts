@@ -4,15 +4,12 @@ import * as TcpServer from "./tcpDataConvert";
 let tcpDataConvert = new TcpServer.TcpServer("1");
 
 let server = net.createServer(function (client) {
-    client.setTimeout(5000);
+    client.setTimeout(1000 * 60 * 3);
     client.setEncoding('utf8');
-    client.on('data', function (data: string) {
-        console.log(`Source Data:${data}`);
-        if (data && data != "") {
-            let bufferData = Buffer.from(data, 'hex');
-            console.log('Received data from client on port %d: %s', client.remotePort, data);
-            test(bufferData, client);
-        }
+    client.on('data', function (data: Buffer) {
+        let tmpData = Buffer.from(data);
+        console.log('Received data from client on port %d: %s', client.remotePort, tmpData.toString('hex'));
+        test(tmpData, client);
     });
     client.on('end', function () {
         console.log('Client disconnected');
@@ -51,10 +48,12 @@ function test(data: Buffer, client: net.Socket) {
     if (!reqID) return;
     switch (reqID) {
         case 1:
-            client.write(
-                tcpDataConvert.pack(1, "test").toString('hex'), (err) => {
-                    if (err) console.log(err);
-                });
+            let sendData = tcpDataConvert.pack(1, "");
+            let sendDataStr = sendData.toString('hex');
+            console.log(`Send Data ${sendDataStr}`);
+            client.write(sendData, (err) => {
+                if (err) console.log(err);
+            });
             break;
         default:
             break;
