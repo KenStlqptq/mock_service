@@ -6,27 +6,33 @@ let tcpDataConvert = new TcpServer.TcpServer("1");
 let server = net.createServer(function (client) {
     client.setTimeout(1000 * 60 * 3);
     client.setEncoding('utf8');
+    //监听消息
+    //最好用buffer来进行管理
     client.on('data', function (data: Buffer) {
         let tmpData = Buffer.from(data);
-        console.log('Received data from client on port %d: %s', client.remotePort, tmpData.toString('hex'));
+        console.log(`Received data from client ${client.address} on port %d: %s`, client.remotePort, tmpData.toString('hex'));
         test(tmpData, client);
     });
+    //断开连接
     client.on('end', function () {
         console.log('Client disconnected');
         server.getConnections(function (err, count) {
             console.log('Remaining Connection:' + count);
         });
     });
+
+    //异常处理
     client.on('error', function (err) {
         console.log('Socket Error:', JSON.stringify(err));
     });
+    //超时处理
     client.on('timeout', function () {
         console.log('Socket Timed Out');
     });
 });
 
-console.log(server.address());
 server.maxConnections = 100;
+//建立连接
 server.addListener("connection", (client) => {
 
 });
@@ -50,7 +56,7 @@ function test(data: Buffer, client: net.Socket) {
         case 1:
             let sendData = tcpDataConvert.pack(1, "");
             let sendDataStr = sendData.toString('hex');
-            console.log(`Send Data ${sendDataStr}`);
+            console.log(`Send Data ${sendDataStr} To ${client.address}`);
             client.write(sendData, (err) => {
                 if (err) console.log(err);
             });

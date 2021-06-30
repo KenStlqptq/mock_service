@@ -11,6 +11,7 @@ let socket: net.Socket = net.connect({
 
 
 let success = false;
+//发送和接收数据是通过buffer
 setInterval(() => {
     success = socket.write(Buffer.from("0001000e00060000010203030201"));
     if (success) {

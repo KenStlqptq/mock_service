@@ -14,6 +14,7 @@ let httpServer = http.createServer(app);
 app.setMaxListeners(100);
 
 app.get('/errorRequest', (req, res) => {
+    console.log(`Get Request From ${req.ip}`);
     res.send({
         errorCode: 100,
         data: {
@@ -24,16 +25,17 @@ app.get('/errorRequest', (req, res) => {
 });
 
 app.get('/random', (req, res) => {
+    console.log(`Get Request From ${req.ip}`);
     const rand = chance.integer({ min: 0, max: 100 });
     if (rand < 80) {
         let respTime = 0;
         if (rand < 10) {
             respTime = 200;
         }
-        else if (rand < 20){
+        else if (rand < 20) {
             respTime = 600;
         }
-        setTimeout(()=>{
+        setTimeout(() => {
             res.send({
                 errorCode: 0,
                 data: {
@@ -58,6 +60,7 @@ app.get('/random', (req, res) => {
 });
 
 app.get('/normalRequest', (req, res) => {
+    console.log(`Get Request From ${req.ip}`);
     res.send({
         errorCode: 0,
         data: {
@@ -73,6 +76,7 @@ app.get('/timeoutRequest', (req, res) => {
 });
 
 app.get('/test', (req, res) => {
+    console.log(`Get Request From ${req.ip}`);
     res.send({
         errorCode: 0,
         data: {
@@ -82,4 +86,5 @@ app.get('/test', (req, res) => {
     res.end();
 });
 
+console.log(`HttpServer Start On ${port}`);
 httpServer.listen(port);
