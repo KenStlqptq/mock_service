@@ -14,7 +14,7 @@ let httpServer = http.createServer(app);
 app.setMaxListeners(100);
 
 app.get('/errorRequest', (req, res) => {
-    console.log(`Get ${req.route} Request From ${req.ip}`);
+    console.log(`Get ${req.route.path} Request From ${req.ip}`);
     res.send({
         errorCode: 100,
         data: {
@@ -73,6 +73,7 @@ app.get('/normalRequest', (req, res) => {
 });
 
 app.get('/timeoutRequest', (req, res) => {
+    console.log("Enter Time Out");
 });
 
 app.get('/test', (req, res) => {
@@ -88,3 +89,4 @@ app.get('/test', (req, res) => {
 
 console.log(`HttpServer Start On ${port}`);
 httpServer.listen(port);
+httpServer.setTimeout(15000);
