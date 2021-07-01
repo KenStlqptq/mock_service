@@ -10,7 +10,7 @@ let server = net.createServer(function (client) {
     //最好用buffer来进行管理
     client.on('data', function (data: Buffer) {
         let tmpData = Buffer.from(data);
-        console.log(`Received data from client ${client.address} on port %d: %s`, client.remotePort, tmpData.toString('hex'));
+        console.log(`Received data from client ${client.remoteAddress} on port %d: %s`, client.remotePort, tmpData.toString('hex'));
         if (tmpData.length != 0) {
             test(tmpData, client);
         }
@@ -58,7 +58,7 @@ function test(data: Buffer, client: net.Socket) {
         case 1:
             let sendData = tcpDataConvert.pack(1, "");
             let sendDataStr = sendData.toString('hex');
-            console.log(`Send Data ${sendDataStr} To ${client.address()}`);
+            console.log(`Send Data ${sendDataStr} To ${client.remoteAddress}`);
             client.write(sendData, (err) => {
                 if (err) console.log(err);
             });
