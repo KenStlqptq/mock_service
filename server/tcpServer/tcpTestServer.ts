@@ -11,7 +11,9 @@ let server = net.createServer(function (client) {
     client.on('data', function (data: Buffer) {
         let tmpData = Buffer.from(data);
         console.log(`Received data from client ${client.address} on port %d: %s`, client.remotePort, tmpData.toString('hex'));
-        test(tmpData, client);
+        if (tmpData.length != 0) {
+            test(tmpData, client);
+        }
     });
     //断开连接
     client.on('end', function () {
@@ -56,7 +58,7 @@ function test(data: Buffer, client: net.Socket) {
         case 1:
             let sendData = tcpDataConvert.pack(1, "");
             let sendDataStr = sendData.toString('hex');
-            console.log(`Send Data ${sendDataStr} To ${client.address}`);
+            console.log(`Send Data ${sendDataStr} To ${client.address()}`);
             client.write(sendData, (err) => {
                 if (err) console.log(err);
             });

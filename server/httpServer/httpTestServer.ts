@@ -14,7 +14,7 @@ let httpServer = http.createServer(app);
 app.setMaxListeners(100);
 
 app.get('/errorRequest', (req, res) => {
-    console.log(`Get Request From ${req.ip}`);
+    console.log(`Get ${req.route} Request From ${req.ip}`);
     res.send({
         errorCode: 100,
         data: {
