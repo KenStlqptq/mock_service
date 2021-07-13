@@ -11,7 +11,7 @@ const errorCode1 = [402, 401, 500];
 const errorCode2 = [0x111, 0x112, 0x113];
 
 let httpServer = http.createServer(app);
-app.setMaxListeners(100);
+app.setMaxListeners(1000);
 
 app.get('/errorRequest', (req, res) => {
     console.log(`Get ${req.route.path} Request From ${req.ip}`);
@@ -54,7 +54,7 @@ app.get('/random', (req, res) => {
         res.end();
     }
     else if (rand < 95) {
-        res.send(chance.pickone(errorCode1));
+        res.sendStatus(chance.pickone(errorCode1));
         res.end();
     }
 });
@@ -86,7 +86,7 @@ app.get('/test', (req, res) => {
     });
     res.end();
 });
-
+httpServer.keepAliveTimeout=15000;
 console.log(`HttpServer Start On ${port}`);
 httpServer.listen(port);
 httpServer.setTimeout(15000);
