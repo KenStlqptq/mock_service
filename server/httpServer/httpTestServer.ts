@@ -62,12 +62,12 @@ app.get('/random', (req, res) => {
 app.get('/normalRequest', (req, res) => {
     console.log(`Get Request From ${req.ip}`);
     res.send({
-        errorCode: 0,
-        data: {
-            name: "test",
-            time: Date.now(),
-            token: uuid.v4()
-        }
+        errorCode: 0
+        // data: {
+        //     name: "test",
+        //     time: Date.now(),
+        //     token: uuid.v4()
+        // }
     });
     res.end();
 });
