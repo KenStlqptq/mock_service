@@ -11,7 +11,8 @@ const errorCode1 = [402, 401, 500];
 const errorCode2 = [0x111, 0x112, 0x113];
 
 let httpServer = http.createServer(app);
-app.setMaxListeners(3000);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/errorRequest', (req, res) => {
     console.log(`Get ${req.route.path} Request From ${req.ip}`);
@@ -60,7 +61,7 @@ app.get('/random', (req, res) => {
 });
 
 app.get('/normalRequest', (req, res) => {
-    console.log(`Get Request From ${req.ip}`);
+    //console.log(`Get Request From ${req.ip}`);
     res.send({
         errorCode: 0
         // data: {
@@ -69,26 +70,6 @@ app.get('/normalRequest', (req, res) => {
         //     token: uuid.v4()
         // }
     });
-    res.end();
-});
-
-//用来测试聚集功能，之后删除该部分内容
-let count_sum: number = 0;
-let success_sum: number = 0;
-
-app.post('/Aggregator', (req, res) => {
-    try {
-        if (req.body) {
-            let item = req.body;
-            count_sum += item["count"];
-            success_sum += item["success"];
-            console.log(`C:${count_sum} S:${success_sum}`);
-        }
-    } catch (error) {
-        console.log("error " + error);
-    }
-    res.statusCode = 204;
-    res.send("");
     res.end();
 });
 
@@ -109,4 +90,5 @@ app.get('/test', (req, res) => {
 httpServer.keepAliveTimeout = 15000;
 console.log(`HttpServer Start On ${port}`);
 httpServer.listen(port);
+httpServer.setMaxListeners(0);
 httpServer.setTimeout(15000);
