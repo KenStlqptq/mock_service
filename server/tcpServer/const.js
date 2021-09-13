@@ -1,7 +1,6 @@
 const constant = {
     PROTO_FIELD: {
-        LEN_EXCLUDE_HEAD: 1,
-        LEN_INCLUDE_HEAD: 2,
+        LEN: 1,
         CMD: 10,
         INDEX: 20,
         FLAG: 30,

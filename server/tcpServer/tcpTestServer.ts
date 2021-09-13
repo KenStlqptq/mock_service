@@ -51,10 +51,9 @@ server.listen({ host: "0.0.0.0", port: 3002 }, function () {
 });
 
 function test(data: Buffer, client: net.Socket) {
-    let content = tcpDataConvert.unpack(data);
-    let reqID = content?.head[0]?.val;
-    if (!reqID) return;
-    switch (reqID) {
+    let pkg = tcpDataConvert.unpack(data);
+    if (!pkg.protoid) return;
+    switch (pkg.protoid) {
         case 1:
             let sendData = tcpDataConvert.pack(1, "");
             let sendDataStr = sendData.toString('hex');

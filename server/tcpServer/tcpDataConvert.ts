@@ -12,14 +12,17 @@ export class TcpServer extends EventEmitter {
     loginflag = false;
     buffer = new TcpBuffer();
     temphead: any = null;
-    bigendian = 1;
-    headsize = 8;
-    head = [{"len":2,"val":0,"type":10},{"len":2,"val":0,"type":2},{"len":2,"val":0,"type":1},{"len":2,"val":0,"type":99}];
+    bigendian = true;
+    headsize = 0;
+    head = [{"len":2,"val":0,"type":1},{"len":2,"val":0,"type":10},{"len":2,"val":7,"type":99}];
 
     constructor(serverid: string) {
         super();
         const self: any = this;
         this.id = serverid;
+        for (const h of this.head) {
+            this.headsize += h.len;
+        }
         this.on('pkg', function (pkg: any) {
             let cb = self.listeners[pkg.protoid];
             if (!!cb) {
@@ -79,10 +82,7 @@ export class TcpServer extends EventEmitter {
                 case PROTO_FIELD.CMD:
                     pkg.protoid = val;
                     break;
-                case PROTO_FIELD.LEN_EXCLUDE_HEAD:
-                    pkg.protolen = val;
-                    break;
-                case PROTO_FIELD.LEN_INCLUDE_HEAD:
+                case PROTO_FIELD.LEN:
                     pkg.protolen = val - this.headsize;
                     break;
                 case PROTO_FIELD.FLAG:
@@ -104,10 +104,7 @@ export class TcpServer extends EventEmitter {
                 case PROTO_FIELD.CMD:
                     buffer.writeuint(EProtoId, field.len);
                     break;
-                case PROTO_FIELD.LEN_EXCLUDE_HEAD:
-                    buffer.writeuint(bytelen, field.len);
-                    break;
-                case PROTO_FIELD.LEN_INCLUDE_HEAD:
+                case PROTO_FIELD.LEN:
                     buffer.writeuint(bytelen + this.headsize, field.len);
                     break;
                 default:
